@@ -10,8 +10,10 @@ describe('Auth test', () => {
     chai
       .request(app)
       .get('/auth/google')
+      .redirects(0)
       .end((err, res) => {
-        expect(res).to.have.status(200);
+        expect(res).to.have.property('statusCode');
+        expect(res).to.have.status(302);
         done();
       });
   });
