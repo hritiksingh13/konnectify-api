@@ -1,8 +1,24 @@
 const express = require('express');
+const oauth = require('./routes/oauth');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 const env = process.env.NODE_ENV;
 const app = express();
+
+app.use(cookieParser());
+app.use(
+  require('express-session')({
+    secret: 'Enter your secret key',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use('/auth', oauth);
 
 app.get('/api/test', async (req, res) => {
   try {
